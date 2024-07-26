@@ -43,6 +43,7 @@ jobs:
         with:
           image: ${{ github.repository }}
           tags: latest ${{ github.ref_name }}
+          platforms: linux/amd64, linux/arm64
           context: ./container
           containerfiles: |
             ./container/Containerfile
