@@ -29,3 +29,4 @@ EXPOSE 8080
 ENTRYPOINT ["entrypoint.sh"]
 
 CMD ["npx", "http-server", "www", "-c-1", "-p", "8080"]
+

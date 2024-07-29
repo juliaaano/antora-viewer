@@ -7,6 +7,7 @@ The purpose of this container is to be used as a development tool for Antora pro
 ## Build and run with Podman.
 
 ```
+cd container/
 podman build -t localhost/antora-viewer .
 ```
 

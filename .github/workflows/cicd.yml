@@ -37,18 +37,17 @@ jobs:
       - name: set datetime
         run: |
           echo "datetime=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
-      - name: log in registry.redhat.io
-        uses: redhat-actions/podman-login@v1
-        with:
-          registry: registry.redhat.io
-          username: ${{ secrets.REGISTRY_REDHAT_IO_USER }}
-          password: ${{ secrets.REGISTRY_REDHAT_IO_PASSWORD }}
+      - name: Install qemu dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static
       - name: build image
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           image: ${{ github.repository }}
           tags: latest ${{ github.ref_name }}
+          platforms: linux/amd64, linux/arm64
           context: ./container
           containerfiles: |
             ./container/Containerfile
