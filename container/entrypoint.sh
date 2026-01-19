@@ -3,6 +3,8 @@
 set -e
 
 CONFIG_FILE=${ANTORA_CONFIG:-default-site.yml}
+USER_DATA_FILE=${ANTORA_USER_DATA:-user_data.yml}
+TEMP_CONFIG_FILE=".tmp_${CONFIG_FILE}"
 
 echo "Starting Antora Viewer in live reload mode..."
 
@@ -16,6 +18,9 @@ cleanup() {
     echo "Shutting down..."
     kill $HTTP_SERVER_PID 2>/dev/null || true
     kill $NODEMON_PID 2>/dev/null || true
+    if [[ -f "$USER_DATA_FILE" ]]; then
+        rm -f "$TEMP_CONFIG_FILE"
+    fi
     exit 0
 }
 
@@ -32,7 +37,8 @@ nodemon --legacy-watch \
         --ext "adoc,yml,yaml" \
         --ignore "www" \
         --ignore ".cache" \
-        --exec "sh -c 'printf \"\nBuilding Antora site...\n\n\" && antora generate --to-dir=www ${CONFIG_FILE} --stacktrace && printf \"\nBuild completed at %s\n\n\" \"\$(date)\"'" &
+        --ignore "$TEMP_CONFIG_FILE" \
+        --exec build_site.sh &
 NODEMON_PID=$!
 
 # Wait for signals

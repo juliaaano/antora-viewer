@@ -18,9 +18,13 @@ LABEL org.opencontainers.image.version="1.0.0"
 
 USER root
 
+RUN curl -L -s -o /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
+    chmod +x /usr/bin/yq
+
 RUN npm install --global @antora/cli@3.1 @antora/site-generator@3.1 http-server@14.1.1 nodemon@3.1.10
 
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./build_site.sh /usr/local/bin/build_site.sh
 
 WORKDIR /antora
 
