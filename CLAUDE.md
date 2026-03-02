@@ -13,8 +13,8 @@ The container image is published to `ghcr.io/juliaaano/antora-viewer`.
 All meaningful code lives in `container/`:
 
 - `Containerfile` — Multi-arch image based on UBI9 Node.js 20. Installs `@antora/cli@3.1`, `@antora/site-generator@3.1`, `http-server`, `nodemon`, and `yq`.
-- `entrypoint.sh` — Starts `http-server` (serves `www/` on port 8080) and `nodemon` (watches `.adoc`, `.yml`, `.yaml` files, ignores `www` and `.cache`, triggers `build_site.sh` on changes).
-- `build_site.sh` — Optionally merges a user data YAML file into the Antora playbook using `yq`, then runs `antora generate`.
+- `entrypoint.sh` — Resolves the Antora config file (`ANTORA_CONFIG` env var > `site.yml` > `default-site.yml`, fails if none found), exports it as `ANTORA_CONFIG`, then starts `http-server` (serves `www/` on port 8080) and `nodemon` (watches `.adoc`, `.yml`, `.yaml` files, ignores `www` and `.cache`, triggers `build_site.sh` on changes).
+- `build_site.sh` — Reads `ANTORA_CONFIG` (resolved and exported by entrypoint), optionally merges a user data YAML file into the playbook using `yq`, then runs `antora generate`.
 
 ## Build and Run
 
@@ -28,7 +28,7 @@ podman run --rm --name antora -v $PWD:/antora -p 8080:8080 -i -t localhost/antor
 ```
 
 Runtime environment variables:
-- `ANTORA_CONFIG` — Antora playbook filename (default: `default-site.yml`)
+- `ANTORA_CONFIG` — Antora playbook filename (auto-detected: `site.yml` then `default-site.yml`; use this to override)
 - `ANTORA_USER_DATA` — YAML file with extra Antora attributes to merge (default: `user_data.yml`)
 
 ## CI/CD

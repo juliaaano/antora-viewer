@@ -17,7 +17,7 @@ The following environment variable can be utilized at runtime using the `-e` par
 
 | Variable  | Description | Default |
 | --------- | ----------- | ------- |
-| `ANTORA_CONFIG` | Name of the Antora configuration file (Playbook) | `default-site.yml` |
+| `ANTORA_CONFIG` | Name of the Antora configuration file (Playbook). If not set, auto-detects `site.yml` then `default-site.yml`. | Auto-detected |
 | `ANTORA_USER_DATA` | Name of the file containing YAML formatted Antora attributes | `user_data.yml` |
 
 In your Antora website directory, run the following.

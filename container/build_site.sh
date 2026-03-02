@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE=${ANTORA_CONFIG:-default-site.yml}
+CONFIG_FILE="$ANTORA_CONFIG"
 USER_DATA_FILE=${ANTORA_USER_DATA:-user_data.yml}
 TEMP_CONFIG_FILE=".tmp_${CONFIG_FILE}"
     
